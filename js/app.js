@@ -10,6 +10,10 @@ app.config(function($routeProvider) {
             templateUrl: "../views/inputItem.html",
             controller: "GroceryListItemsController"
         })
+        .when("/addItem/:id/:cat", {
+            templateUrl: "../views/inputItem.html",
+            controller: "GroceryListItemsController"
+        })
         .otherwise({
             redirectTo: "/"
         })
@@ -19,7 +23,7 @@ app.controller("HomeController", ["$scope", function($scope) {
     $scope.appTitle = "Grocery List";
 }]);
 
-app.controller("GroceryListItemsController", ["$scope", function($scope) {
+app.controller("GroceryListItemsController", ["$scope", "$routeParams", function($scope, $routeParams) {
 
     $scope.groceryItems = [
         {completed: true, itemName: 'milk', date: '2014-10-01'},
@@ -31,5 +35,7 @@ app.controller("GroceryListItemsController", ["$scope", function($scope) {
         {completed: true, itemName: 'eggs', date: '2014-10-04'},
         {completed: true, itemName: 'tortillas', date: '2014-10-04'}
     ]
+
+    $scope.rp = "Route Parameter value: " + $routeParams.id + $routeParams.cat;
 
 }]);
