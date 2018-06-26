@@ -44,7 +44,7 @@ app.controller("HomeController", ["$scope", function($scope) {
 
 app.controller("GroceryListItemsController", ["$scope", "$routeParams", "GroceryService", function($scope, $routeParams, $GroceryService) {
 
-    $scope.groceryItems = GroceryService.groceryItems;
+    $scope.groceryItems = $GroceryService.groceryItems;
 
     $scope.rp = "Route Parameter value: " + $routeParams.id + $routeParams.cat;
 
