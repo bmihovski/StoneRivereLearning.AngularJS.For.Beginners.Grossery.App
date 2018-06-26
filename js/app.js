@@ -7,17 +7,17 @@ app.config(function($routeProvider) {
             controller: "GroceryListItemsController"
         })
         .when("/addItem", {
-            templateUrl: "../views/inputItem.html",
+            templateUrl: "../views/addItem.html",
             controller: "GroceryListItemsController"
         })
-        .when("/addItem/:id/:cat", {
-            templateUrl: "../views/inputItem.html",
+        .when("/addItem/edit/:id", {
+            templateUrl: "../views/addItem.html",
             controller: "GroceryListItemsController"
         })
         .otherwise({
             redirectTo: "/"
         })
-})
+});
 
 app.service("GroceryService", function() {
 
@@ -34,6 +34,14 @@ app.service("GroceryService", function() {
         {id: 8, completed: true, itemName: 'tortillas', date: '2014-10-04'}
     ];
 
+	groceryService.findById = function(id) {
+		for ( var item in groceryService.groceryItems ) {
+			if(groceryService.groceryItems[item].id === id) {
+				return groceryService.groceryItems[item];
+			}
+		}
+	};
+
 	groceryService.getNewId = function() {
 
 		if(groceryService.newId) {
@@ -45,18 +53,18 @@ app.service("GroceryService", function() {
 
 			return groceryService.newId;
 		}
-	}
+	};
 
 	groceryService.save = function(entry) {
 		entry.id = groceryService.getNewId();
 		groceryService.groceryItems.push(entry);
 
-	}
+	};
 
 
 	return groceryService;
 
-})
+});
 
 app.controller("HomeController", ["$scope", function($scope) {
     $scope.appTitle = "Grocery List";
