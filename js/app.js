@@ -107,3 +107,11 @@ app.controller("GroceryListItemController", ["$scope", "$routeParams", "$locatio
     console.log($scope.groceryItems);
 
 }]);
+
+app.directive("tbGroceryItem", function() {
+	return {
+		restrict: "E",
+		templateUrl: "./views/groceryItem.html"
+	};
+});
+
