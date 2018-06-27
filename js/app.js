@@ -26,7 +26,7 @@ app.service("GroceryService", function() {
 	groceryService.groceryItems = [
         {id: 1, completed: true, itemName: 'milk', date: new Date("October 1, 2014 11:13:00")},
         {id: 2, completed: true, itemName: 'cookies', date: new Date("October 1, 2014 11:13:00")},
-        {id: 3, completed: true, itemName: 'ice cream', date: new Date("October 2, 2014 11:13:00")},
+        {id: 3, completed: true, itemName: 'ice cream', date: new Date("October 1, 2014 11:13:00")},
         {id: 4, completed: true, itemName: 'potatoes', date: new Date("October 2, 2014 11:13:00")},
         {id: 5, completed: true, itemName: 'cereal', date: new Date("October 3, 2014 11:13:00")},
         {id: 6, completed: true, itemName: 'bread', date: new Date("October 3, 2014 11:13:00")},
@@ -75,8 +75,11 @@ app.service("GroceryService", function() {
 	groceryService.removeItem = function(entry) {
 		var index = groceryService.groceryItems.indexOf(entry);
 		groceryService.groceryItems.splice(index, 1);
-	}
+	};
 
+	groceryService.markCompleted = function(entry) {
+		entry.completed = !entry.completed;
+	};
 
 	return groceryService;
 
@@ -88,12 +91,17 @@ app.controller("HomeController", ["$scope", "GroceryService", function($scope, G
     $scope.removeItem = function(entry) {
 		GroceryService.removeItem(entry);
 	};
+
+	$scope.markCompleted = function(entry) {
+		GroceryService.markCompleted(entry);
+	};
+
 }]);
 
 app.controller("GroceryListItemController", ["$scope", "$routeParams", "$location", "GroceryService", function($scope, $routeParams, $location, GroceryService) {
 
     if (!$routeParams.id) {
-    	$scope.groceryItem = { id: 0, completed: true, itemName: "", date: new Date() }
+    	$scope.groceryItem = { id: 0, completed: false, itemName: "", date: new Date() }
 	} else {
 		$scope.groceryItem = _.clone(GroceryService.findById(parseInt($routeParams.id)));
 	}
