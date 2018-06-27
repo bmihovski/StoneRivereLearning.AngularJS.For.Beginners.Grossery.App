@@ -24,14 +24,14 @@ app.service("GroceryService", function() {
 	var groceryService = {};
 
 	groceryService.groceryItems = [
-        {id: 1, completed: true, itemName: 'milk', date: '2014-10-01'},
-        {id: 2, completed: true, itemName: 'cookies', date: '2014-10-01'},
-        {id: 3, completed: true, itemName: 'ice cream', date: '2014-10-02'},
-        {id: 4, completed: true, itemName: 'potatoes', date: '2014-10-02'},
-        {id: 5, completed: true, itemName: 'cereal', date: '2014-10-03'},
-        {id: 6, completed: true, itemName: 'bread', date: '2014-10-03'},
-        {id: 7, completed: true, itemName: 'eggs', date: '2014-10-04'},
-        {id: 8, completed: true, itemName: 'tortillas', date: '2014-10-04'}
+        {id: 1, completed: true, itemName: 'milk', date: new Date("October 1, 2014 11:13:00")},
+        {id: 2, completed: true, itemName: 'cookies', date: new Date("October 1, 2014 11:13:00")},
+        {id: 3, completed: true, itemName: 'ice cream', date: new Date("October 2, 2014 11:13:00")},
+        {id: 4, completed: true, itemName: 'potatoes', date: new Date("October 2, 2014 11:13:00")},
+        {id: 5, completed: true, itemName: 'cereal', date: new Date("October 3, 2014 11:13:00")},
+        {id: 6, completed: true, itemName: 'bread', date: new Date("October 3, 2014 11:13:00")},
+        {id: 7, completed: true, itemName: 'eggs', date: new Date("October 4, 2014 11:13:00")},
+        {id: 8, completed: true, itemName: 'tortillas', date: new Date("October 5, 2014 11:13:00")}
     ];
 
 	groceryService.findById = function(id) {
@@ -72,6 +72,11 @@ app.service("GroceryService", function() {
 
 	};
 
+	groceryService.removeItem = function(entry) {
+		var index = groceryService.groceryItems.indexOf(entry);
+		groceryService.groceryItems.splice(index, 1);
+	}
+
 
 	return groceryService;
 
@@ -79,6 +84,10 @@ app.service("GroceryService", function() {
 
 app.controller("HomeController", ["$scope", "GroceryService", function($scope, GroceryService) {
     $scope.groceryItems = GroceryService.groceryItems;
+
+    $scope.removeItem = function(entry) {
+		GroceryService.removeItem(entry);
+	};
 }]);
 
 app.controller("GroceryListItemController", ["$scope", "$routeParams", "$location", "GroceryService", function($scope, $routeParams, $location, GroceryService) {
