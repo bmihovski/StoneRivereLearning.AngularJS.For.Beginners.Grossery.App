@@ -54,7 +54,6 @@ app.service("GroceryService", function($http) {
 	groceryService.findById = function(id) {
 		for ( var item in groceryService.groceryItems ) {
 			if(groceryService.groceryItems[item].id === id) {
-				console.log(groceryService.groceryItems[item]);
 				return groceryService.groceryItems[item];
 			}
 		}
@@ -77,7 +76,6 @@ app.service("GroceryService", function($http) {
 				})
 
 				.error(function(data, status) {
-					alert("Post request failed");
 				});
 			groceryService.groceryItems.push(entry);
 		}
