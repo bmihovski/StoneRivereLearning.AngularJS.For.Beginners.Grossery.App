@@ -37,7 +37,7 @@ app.service("GroceryService", function($http) {
         }
     };
 
-	$http.get("data/server_data.json")
+	$http.get("../data/server_data.json")
 		.success(function(data) {
 			groceryService.groceryItems = data;
 
@@ -64,13 +64,22 @@ app.service("GroceryService", function($http) {
 
 		if (updatedItem) {
 
-			updatedItem.completed = entry.completed;
-			updatedItem.itemName = entry.itemName;
-			updatedItem.date = entry.date;
+			$http.post("../data/updated_item.json", entry)
+				.success(function(data) {
+					if (data.status == 1) {
+						updatedItem.completed = entry.completed;
+						updatedItem.itemName = entry.itemName;
+						updatedItem.date = entry.date;
+					}
+				})
+				.error(function(data, status) {
+
+				});
+
 
 		} else {
 
-			$http.post("data/added_item.json", entry)
+			$http.post("../data/added_item.json", entry)
 				.success(function(data) {
 					entry.id = data.newId;
 				})
@@ -135,7 +144,7 @@ app.controller("GroceryListItemController", ["$scope", "$routeParams", "$locatio
 app.directive("tbGroceryItem", function() {
 	return {
 		restrict: "E",
-		templateUrl: "./views/groceryItem.html"
+		templateUrl: "../views/groceryItem.html"
 	};
 });
 
