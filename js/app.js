@@ -25,7 +25,19 @@ app.service("GroceryService", function($http) {
 
 	groceryService.groceryItems = [];
 
-	$http.get("../data/server_data.json")
+    groceryService.getNewId = function(){
+
+        if(groceryService.newId){
+            groceryService.newId++;
+            return groceryService.newId;
+        }else{
+            var maxId = _.max(groceryService.groceryItems, function(entry){ return entry.id;})
+            groceryService.newId = maxId.id + 1;
+            return groceryService.newId;
+        }
+    };
+
+	$http.get("data/server_data.json")
 		.success(function(data) {
 			groceryService.groceryItems = data;
 
@@ -48,19 +60,6 @@ app.service("GroceryService", function($http) {
 		}
 	};
 
-	groceryService.getNewId = function() {
-
-		if(groceryService.newId) {
-			groceryService.newId++;
-			return groceryService.newId;
-		} else {
-			var maxId = _.max(groceryService.groceryItems, function(entry) { return entry.id; });
-			groceryService.newId = maxId.id + 1;
-
-			return groceryService.newId;
-		}
-	};
-
 	groceryService.save = function(entry) {
 		var updatedItem = groceryService.findById(entry.id);
 
@@ -71,7 +70,15 @@ app.service("GroceryService", function($http) {
 			updatedItem.date = entry.date;
 
 		} else {
-			entry.id = groceryService.getNewId();
+
+			$http.post("data/added_item.json", entry)
+				.success(function(data) {
+					entry.id = data.newId;
+				})
+
+				.error(function(data, status) {
+					alert("Post request failed");
+				});
 			groceryService.groceryItems.push(entry);
 		}
 
@@ -124,8 +131,6 @@ app.controller("GroceryListItemController", ["$scope", "$routeParams", "$locatio
 		GroceryService.save($scope.groceryItem);
 		$location.path("/");
 	}
-
-    console.log($scope.groceryItems);
 
 }]);
 
