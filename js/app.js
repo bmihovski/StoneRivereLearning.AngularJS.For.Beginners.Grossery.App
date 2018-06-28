@@ -66,7 +66,7 @@ app.service("GroceryService", function($http) {
 
 			$http.post("../data/updated_item.json", entry)
 				.success(function(data) {
-					if (data.status == 1) {
+					if (data.status) {
 						updatedItem.completed = entry.completed;
 						updatedItem.itemName = entry.itemName;
 						updatedItem.date = entry.date;
@@ -92,8 +92,16 @@ app.service("GroceryService", function($http) {
 	};
 
 	groceryService.removeItem = function(entry) {
-		var index = groceryService.groceryItems.indexOf(entry);
-		groceryService.groceryItems.splice(index, 1);
+		$http.post("../data/delete_item.json", {id: entry.id})
+			.success(function(data) {
+				if (data.status) {
+					var index = groceryService.groceryItems.indexOf(entry);
+					groceryService.groceryItems.splice(index, 1);
+				}
+			})
+			.error(function(data, status) {
+
+			});
 	};
 
 	groceryService.markCompleted = function(entry) {
